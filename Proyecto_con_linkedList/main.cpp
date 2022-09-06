@@ -233,14 +233,3 @@ int main(){
     }
     return 0;
 }
-
-
-// int main(){
-//     Node *head;
-//     // lecturaArchivoSort(head, "bitacora.txt");
-//     lecturaArchivo(head, "sorted.txt");
-//     cout << "....";
-//     findRange(head);
-//     // printSortedList(head);
-//     return 0;
-// }

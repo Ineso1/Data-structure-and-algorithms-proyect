@@ -41,8 +41,7 @@ int dateIntCode(vector<string> &vec){
     }
 }
 
-void lecturaArchivo(vector<vector<string>> &matriz){
-    string direccionArchivo = "bitacora.txt";
+void lecturaArchivo(vector<vector<string>> &matriz, string direccionArchivo){
     ifstream archivo;
     archivo.open(direccionArchivo);
     string mes,dia, hora, direccionIP, razon;
@@ -89,7 +88,42 @@ void printSortedList(vector<vector<string>> &matriz){
 
 int main(){
     vector<vector<string>> matriz;
-    lecturaArchivo(matriz);
+    int op;
+    cout << "\n\t\tLista de peticiones\n"
+    <<"\t1.Lectura y ordenamiento de listado de peticiones"
+    <<"\n\t2.Busqueda en datos preordenados"
+    <<"\n\nOpcion: ";
+    try
+    {
+        cin >> op;
+
+    }
+    catch(const std::exception& e)
+    {
+        cout << "Opcion no valida\n";
+    }
+    if (op == 1)
+    {
+        lecturaArchivo(matriz, "bitacora.txt");
+        printSortedList(matriz);
+        cout << "El resultado fue guardado en un archivo llamado sorted.txt";
+
+    }
+    else if (op == 2)
+    {
+        lecturaArchivo(matriz, "sorted.txt");
+        findRange(matriz);
+        cout << "El resultado fue guardado en un archivo llamado resultadoBusqueda.txt";
+    }
+    else{
+        cout << "Opcion no valida";
+    }
+    return 0;
+}
+
+int main(){
+    vector<vector<string>> matriz;
+    lecturaArchivo(matriz, "bitacora.txt");
     bubbleSort(matriz);
     cout<<"sorted";
     printSortedList(matriz);
