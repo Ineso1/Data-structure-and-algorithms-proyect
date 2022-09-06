@@ -59,8 +59,7 @@ int sortNode(Node* &head, Node* &actual){
     
 }
 
-void lecturaArchivo(Node* &head){
-    string direccionArchivo = "bitacora.txt";
+void lecturaArchivoSort(Node* &head, string direccionArchivo){
     ifstream archivo;
     archivo.open(direccionArchivo);
     if (archivo.is_open()){
@@ -96,6 +95,41 @@ void lecturaArchivo(Node* &head){
     }
 }
 
+void lecturaArchivo(Node* &head, string direccionArchivo){
+    ifstream archivo;
+    archivo.open(direccionArchivo);
+    if (archivo.is_open()){
+        string mes,dia, hora, direccionIP, razon;
+        Node *tmp;
+        if (archivo >> mes>> dia>> hora>> direccionIP)
+        {
+            getline(archivo, razon);
+            Node *newNode = new Node();
+            newNode->month = mes;
+            newNode->day = dia;
+            newNode->hour = hora;
+            newNode->ip = direccionIP;
+            newNode->reason = razon;
+            newNode->next = NULL;
+            head = newNode;
+            tmp = head;
+        }
+
+        while (archivo >> mes>> dia>> hora>> direccionIP)
+        {
+            getline(archivo, razon);
+            Node *newNode = new Node();
+            newNode->month = mes;
+            newNode->day = dia;
+            newNode->hour = hora;
+            newNode->ip = direccionIP;
+            newNode->reason = razon;
+            newNode->next = NULL;
+        }
+        cout<<".";
+    }
+}
+
 void printSortedList(Node *head){
     ofstream file;
     file.open("sorted.txt");
@@ -108,22 +142,35 @@ void printSortedList(Node *head){
         << tmp->reason <<"\n";
         tmp = tmp->next;
     }
+    file.close();
+}
+
+void findRange(Node *head){
+    Node *tmp = head;
+    string monthFirst,dayFirst,hourFirst,minuteFirst,secondFirst;
+    string monthLast,dayLast,hourLast,minuteLast,secondLast;
+    cout<<"Busqueda por rango de fecha\nIntroduce la fecha deceada con espacios entre caracteristicas con el siguiente formato\nmonth day hour minute second -> (00 00 00 00 00)";
+    cin >> monthFirst >> dayFirst >> hourFirst >> minuteFirst >> secondFirst;
+    cout<<"Busqueda por rango de fecha\nIntroduce la fecha deceada con espacios entre caracteristicas con el siguiente formato\nmonth day hour minute second -> (00 00 00 00 00)";
+    cin >> monthLast >> dayLast >> hourLast >> minuteLast >> secondLast;
+    string hourFormatFirst = hourFirst + ":" + minuteFirst + ":" + secondFirst;  
+    string hourFormatLast = hourLast + ":" + minuteLast + ":" + secondLast;  
+    while (tmp !=NULL)
+    {
+        if (dateIntCode(monthFirst,dayFirst,hourFormatFirst) )
+        {
+            /* code */
+        }
+        
+        tmp = tmp->next;
+    }
+    
 }
 
 int main(){
     Node *head;
-    lecturaArchivo(head);
-    // Node *tmp = head;
-    // while(tmp !=NULL){
-    //     cout << tmp->month << " - > ";
-    //     tmp = tmp->next;
-    // }
-    // cout << endl;
-    // tmp = head;
-    // while(tmp !=NULL){
-    //     cout << dateIntCode(tmp->month, tmp->day, tmp->hour) << " - > ";
-    //     tmp = tmp->next;
-    // }
+    // lecturaArchivoSort(head, "bitacora.txt");
+    lecturaArchivo(head, "sorted.txt");
     printSortedList(head);
     return 0;
 }
