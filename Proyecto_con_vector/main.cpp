@@ -86,6 +86,40 @@ void printSortedList(vector<vector<string>> &matriz){
     }
 }
 
+
+void findRange(vector<vector<string>> &matriz){
+    string monthFirst,dayFirst,hourFirst,minuteFirst,secondFirst;
+    string monthLast,dayLast,hourLast,minuteLast,secondLast;
+    cout<<"\nBusqueda por rango de fecha\nIntroduce la fecha deceada con espacios entre caracteristicas con el siguiente formato\n(month/ day/ hour/ minute/ second)\n Ejemplo segundo limite (Jun 1 10 30 00)\n Ejemplo primer limite (Oct 10 01 25 00)\nIntroduce el primer limite:\n";
+    cin >> monthFirst >> dayFirst >> hourFirst >> minuteFirst >> secondFirst;
+    cout<<"\nIntroduce el segundo limite de fecha\n";
+    cin >> monthLast >> dayLast >> hourLast >> minuteLast >> secondLast;
+    string hourFormatFirst = hourFirst + ":" + minuteFirst + ":" + secondFirst;  
+    string hourFormatLast = hourLast + ":" + minuteLast + ":" + secondLast;
+    vector<string> vecFirst= {monthFirst, dayFirst, hourFormatFirst};
+    vector<string> vecLast= {monthLast, dayLast, hourFormatLast};  
+    ofstream file;
+    file.open("resultadoBusqueda.txt");
+    if(dateIntCode(vecFirst) > dateIntCode(vecLast)){
+            vector<string> aux;
+            aux = vecFirst;
+            vecFirst = vecLast;
+            vecLast = aux;
+        }
+    for (int i = 0; i < matriz.size(); i++)
+    {   
+        vector<string> vecAux = {matriz[i][0],matriz[i][1],matriz[i][2]};
+        if (dateIntCode(vecFirst) < dateIntCode(vecAux) && dateIntCode(vecAux) < dateIntCode(vecLast))
+        {
+            for(int j = 0; j < matriz[i].size(); j++ ){
+                file << matriz[i][j]<<" ";
+            }
+            file << "\n";
+        }
+    }
+    
+}
+
 int main(){
     vector<vector<string>> matriz;
     int op;
@@ -118,14 +152,5 @@ int main(){
     else{
         cout << "Opcion no valida";
     }
-    return 0;
-}
-
-int main(){
-    vector<vector<string>> matriz;
-    lecturaArchivo(matriz, "bitacora.txt");
-    bubbleSort(matriz);
-    cout<<"sorted";
-    printSortedList(matriz);
     return 0;
 }
