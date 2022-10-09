@@ -20,6 +20,9 @@ class LinkedList{
         void deleteNode(int);
         int sortNodeDate(Node*&);
         int sortNodeIp(Node*&);
+        void saveSortedList();
+        void findRangeIp(std::string, std::string);
+        
 };
 
 #endif // LINKEDLIST

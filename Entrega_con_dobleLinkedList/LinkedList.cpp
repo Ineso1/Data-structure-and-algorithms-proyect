@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <stdlib.h>
 
 //Constructor Lista ligada
 LinkedList::LinkedList(){
@@ -74,6 +75,7 @@ apartir de un archivo dado carga la lista con datos
 fillList(archivo del cual se va a leer);
 */
 void LinkedList::fillList(std::string direccionArchivo){
+    int charge = 0;
     std::ifstream archivo;
     archivo.open(direccionArchivo);
     if (archivo.is_open()){
@@ -95,6 +97,10 @@ void LinkedList::fillList(std::string direccionArchivo){
             Node *newNode = new Node();
             newNode->setData(month, day, hour, ip, reason);
             sortNodeIp(newNode);
+            if (++charge%30 == 0){
+                system("CLS");
+                std::cout<<"..."<< (charge*100/16807)<<"%";
+            }
             //sortNodeDate(newNode);
         }
     }
@@ -192,7 +198,7 @@ void LinkedList::deleteNode(int index){
 
     tmp->nextNode->previousNode = tmp->previousNode;
     tmp->previousNode->nextNode = tmp->nextNode;
-    // tmp->~Node();
+    tmp->~Node();
 }
 
 int LinkedList::sortNodeDate(Node* &current){
@@ -220,9 +226,9 @@ int LinkedList::sortNodeDate(Node* &current){
 int LinkedList::sortNodeIp(Node* &current){
     Node *tmp = head;
     while(tmp->nextNode !=NULL){
-        int tmpDate = tmp->ipIntCode();
-        int tmpNextNodeDate = tmp->nextNode->ipIntCode();
-        int currentDate = current->ipIntCode();
+        unsigned long long  tmpDate = tmp->ipIntCode();
+        unsigned long long tmpNextNodeDate = tmp->nextNode->ipIntCode();
+        unsigned long long currentDate = current->ipIntCode();
         if(tmpDate >= currentDate && currentDate > tmpNextNodeDate){
             insertAfter(tmp, current);
             return 0;
@@ -237,4 +243,49 @@ int LinkedList::sortNodeIp(Node* &current){
     tmp->nextNode = current;
     tmp = tmp->nextNode;
     return -1;
+}
+
+void LinkedList::saveSortedList(){
+    std::ofstream file;
+    file.open("sorted.txt");
+    Node *tmp = head;
+    while(tmp !=NULL){
+        file << tmp->month << " " 
+        << tmp->day << " " 
+        << tmp->hour << " " 
+        << tmp->ip 
+        << tmp->reason <<"\n";
+        tmp = tmp->nextNode;
+    }
+    file.close();
+}
+
+void LinkedList::findRangeIp(std::string ip1,std::string ip2){
+    Node *tmp = head;
+    Node *ini = new Node();
+    Node *fin = new Node();
+    std::string empty;
+    ini->setData(empty, empty, empty, ip1, empty);
+    fin->setData(empty, empty, empty, ip2, empty);
+    std::ofstream file;
+    file.open("resultadoBusqueda.txt");
+    while (tmp !=NULL)
+    {   
+        if(ini->ipIntCode() > fin->ipIntCode()){
+            Node* aux;
+            aux = ini;
+            ini = fin;
+            fin = ini;
+        }
+        if (ini->ipIntCode() < tmp->ipIntCode() && tmp->ipIntCode() < fin->ipIntCode())
+        {
+            file << tmp->month << " " 
+            << tmp->day << " " 
+            << tmp->hour << " " 
+            << tmp->ip 
+            << tmp->reason <<"\n";
+            tmp = tmp->nextNode;
+        }
+        tmp = tmp->nextNode;
+    }
 }

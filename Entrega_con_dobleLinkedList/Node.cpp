@@ -89,18 +89,32 @@ int Node::dateIntCode(){
     }
 }
 
-int Node::ipIntCode(){
+unsigned long long Node::ipIntCode(){
     try
     {
-        std::string result;
-        result = ip[0]+ip[1]+ip[2]
-        +ip[4]+ip[5]+ip[6]
-        +ip[8]+ip[9]+ip[10];
-        return std::stoi(result);
+        std::string result = "";
+        int dig = 0;
+        for (int i = 0; i < ip.length(); i++)
+        {   
+            if(ip[i] != '.' && ip[i] != ':')
+            {
+                result += ip[i];
+                dig++;
+            }
+            else{
+                while (dig<3)
+                {
+                    result += '0';
+                    dig++;
+                }
+                dig = 0;
+            }
+        }
+        return std::stoull(result);
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << e.what() << ": Algun error por aqui" << '\n';
         return -1;
     }
 }

@@ -14,7 +14,7 @@ class Node{
     ~Node();
     friend std::ostream &operator <<(std::ostream& salida, const Node&);
     int dateIntCode();
-    int ipIntCode();
+    unsigned long long ipIntCode();
 };
 
 #endif // NODE_H
