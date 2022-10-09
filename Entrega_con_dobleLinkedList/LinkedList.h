@@ -19,6 +19,7 @@ class LinkedList{
         void update(int, std::string, std::string, std::string, std::string, std::string);
         void deleteNode(int);
         int sortNodeDate(Node*&);
+        int sortNodeIp(Node*&);
 };
 
 #endif // LINKEDLIST

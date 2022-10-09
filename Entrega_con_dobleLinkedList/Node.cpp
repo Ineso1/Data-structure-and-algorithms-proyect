@@ -88,3 +88,19 @@ int Node::dateIntCode(){
         return -1;
     }
 }
+
+int Node::ipIntCode(){
+    try
+    {
+        std::string result;
+        result = ip[0]+ip[1]+ip[2]
+        +ip[4]+ip[5]+ip[6]
+        +ip[8]+ip[9]+ip[10];
+        return std::stoi(result);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return -1;
+    }
+}

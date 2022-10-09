@@ -92,7 +92,10 @@ void LinkedList::fillList(std::string direccionArchivo){
         while (archivo >> month>> day>> hour>> ip)
         {
             std::getline(archivo, reason);
-            tmp = insertAfter(tmp, month, day, hour, ip, reason);
+            Node *newNode = new Node();
+            newNode->setData(month, day, hour, ip, reason);
+            sortNodeIp(newNode);
+            //sortNodeDate(newNode);
         }
     }
 }
@@ -198,6 +201,28 @@ int LinkedList::sortNodeDate(Node* &current){
         int tmpDate = tmp->dateIntCode();
         int tmpNextNodeDate = tmp->nextNode->dateIntCode();
         int currentDate = current->dateIntCode();
+        if(tmpDate >= currentDate && currentDate > tmpNextNodeDate){
+            insertAfter(tmp, current);
+            return 0;
+        }
+        else if(tmpDate < currentDate){
+            current->nextNode = head; 
+            head = current;
+            return 0;
+        }
+        tmp = tmp->nextNode;
+    }
+    tmp->nextNode = current;
+    tmp = tmp->nextNode;
+    return -1;
+}
+
+int LinkedList::sortNodeIp(Node* &current){
+    Node *tmp = head;
+    while(tmp->nextNode !=NULL){
+        int tmpDate = tmp->ipIntCode();
+        int tmpNextNodeDate = tmp->nextNode->ipIntCode();
+        int currentDate = current->ipIntCode();
         if(tmpDate >= currentDate && currentDate > tmpNextNodeDate){
             insertAfter(tmp, current);
             return 0;
