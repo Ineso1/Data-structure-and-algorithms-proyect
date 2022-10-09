@@ -1,3 +1,5 @@
+//Ines Aljandro Garcia Mosqueda A00834571
+//Jesus Fong Ruiz A01254062s
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -5,6 +7,8 @@
 #include <map>
 using namespace std;
 
+/*Conversion de mes, dia y hora a codigo de numero 
+entero de identificacion*/
 int dateIntCode(vector<string> &vec){
     try
     {
@@ -41,6 +45,7 @@ int dateIntCode(vector<string> &vec){
     }
 }
 
+/*Lectura del archivo y carga de dato en la matriz*/
 void lecturaArchivo(vector<vector<string>> &matriz, string direccionArchivo){
     ifstream archivo;
     archivo.open(direccionArchivo);
@@ -55,12 +60,15 @@ void lecturaArchivo(vector<vector<string>> &matriz, string direccionArchivo){
     cout<<"...Lectura Completa...";
 }
 
+/*Funcion swap para alternar informacion entre variables*/
 void swap(vector<string> &a, vector<string>&b){
     vector<string> aux = a;
     a = b;
     b = aux;
 }
 
+/*Funcion de ordenamiento con complejidad O(n2) en su peor caso
+Se puede optimizar la busqueda incluyendo un merge sort o quicksort a O(nLog(n))*/
 void bubbleSort(vector<vector<string>> &matriz){
     for (int i = 0; i < matriz.size(); i++)
     {
@@ -74,6 +82,7 @@ void bubbleSort(vector<vector<string>> &matriz){
     } 
 }
 
+/*Imprime la lista ordenada en un archivo llamado sorted.txt*/
 void printSortedList(vector<vector<string>> &matriz){
     ofstream file;
     file.open("sorted.txt");
@@ -86,7 +95,8 @@ void printSortedList(vector<vector<string>> &matriz){
     }
 }
 
-
+/*Proceso de busqueda lineal apartir de dos limites, Este tipo de busqueda de datos es complejidad O(n)
+Se puede mejorar implementando una busqueda binaria dado a que el codigo hace el ordenamiento de datos y con esto logramos complejidad de busqueda O(log(n))*/
 void findRange(vector<vector<string>> &matriz){
     string monthFirst,dayFirst,hourFirst,minuteFirst,secondFirst;
     string monthLast,dayLast,hourLast,minuteLast,secondLast;
@@ -120,6 +130,11 @@ void findRange(vector<vector<string>> &matriz){
     
 }
 
+
+/*Menu principal
+Da dos opciones 
+1. Ordenamiento de datos y cargarlos a la matriz
+2. Busqueda de datos apartir de dos limites*/
 int main(){
     vector<vector<string>> matriz;
     int op;
