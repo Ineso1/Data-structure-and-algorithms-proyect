@@ -94,22 +94,31 @@ unsigned long long Node::ipIntCode(){
     {
         std::string result = "";
         int dig = 0;
+        int sep = 0;
+        
+        std::string cuarteto = "";
+
         for (int i = 0; i < ip.length(); i++)
         {   
+
             if(ip[i] != '.' && ip[i] != ':')
             {
-                result += ip[i];
+                cuarteto += ip[i];
                 dig++;
             }
             else{
                 while (dig<3)
                 {
-                    result += '0';
+                    cuarteto = "0" + cuarteto;
                     dig++;
                 }
                 dig = 0;
+                result += cuarteto;
+                cuarteto = "";
             }
         }
+        result+=cuarteto;
+        // std::cout<<result<<std::endl;
         return std::stoull(result);
     }
     catch(const std::exception& e)
