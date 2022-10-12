@@ -5,7 +5,6 @@
 using namespace std;
 
 
-
 int main(){
     LinkedList ll;  //Crea una lista doblemente ligada
     // ll.fillList("bitacoraPrueba.txt");   //Lectura de archivo para carga de lista
