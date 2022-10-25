@@ -123,8 +123,8 @@ class BST{
     Node* head;
     int orderType = 0;
     private:
-        void insertNode(Node*&, Node*&, int&); //Funciona
-        int sortType(Node*&, Node*&, int&); //Dependiendo el tipo de ordenamiento se requiera (1 por Ip, 2 por Fecha)
+        void insertNode(Node*&, Node*&); //Funciona
+        int sortType(Node*&, Node*&); //Dependiendo el tipo de ordenamiento se requiera (1 por Ip, 2 por Fecha)
         void deleteNode(Node*&, string&, string&, string&, string&, string&);
         void PreOrder(Node*&); //Funciona
         void InOrder(Node*&); //Funciona
@@ -145,8 +145,8 @@ class BST{
         void searchRange(string&, string&);
 };
 
-int BST::sortType(Node*&node, Node*&newNode, int& code){
-    if (code == 1)
+int BST::sortType(Node*&node, Node*&newNode){
+    if (orderType == 1)
     {   
         unsigned long long nodeCode = node->ipIntCode(); 
         unsigned long long newNodeCode = newNode->ipIntCode();
@@ -156,7 +156,7 @@ int BST::sortType(Node*&node, Node*&newNode, int& code){
             return -1;
         return 0;
     }
-    else if (code == 2){
+    else if (orderType == 2){
         int nodeCode = node->dateIntCode();
         int newNodeCode = newNode->dateIntCode();
         if (nodeCode > newNodeCode)
@@ -168,18 +168,18 @@ int BST::sortType(Node*&node, Node*&newNode, int& code){
     throw invalid_argument("Opcion de ordenamiento inexistente");
 }
 
-void BST::insertNode(Node* &node, Node* &newNode, int &condition){
+void BST::insertNode(Node* &node, Node* &newNode){
     if (node == NULL)
     {
         node = newNode;
     }
     else{
-        int step = sortType(node, newNode, condition);
+        int step = sortType(node, newNode);
         if(step == 1){
-            insertNode(node->left, newNode, condition);
+            insertNode(node->left, newNode);
         }
         else if(step == -1){
-            insertNode(node->right, newNode, condition);
+            insertNode(node->right, newNode);
         }
         else{
             cout << newNode->getData() << " Repetido " <<"\n";
@@ -217,6 +217,7 @@ void BST::PostOrder(Node* &node){
 void BST::fillBST(std::string fileName, int condition){
     std::ifstream file;
     head = NULL;
+    orderType = condition;
     file.open(fileName);
     string month, day, hour, ip, reason;
     try{
@@ -224,7 +225,7 @@ void BST::fillBST(std::string fileName, int condition){
         {
             getline(file, reason);
             Node* newNode = new Node(month, day, hour, ip, reason);
-            insertNode(head, newNode, condition);
+            insertNode(head, newNode);
         }
     }
     catch(invalid_argument e){
@@ -232,9 +233,9 @@ void BST::fillBST(std::string fileName, int condition){
     }
 }
 
-void BST::searchRange(string& condition1, string& condition2){
-    searchRange(head, condition1, condition2);
-}
+// void BST::searchRange(string& condition1, string& condition2){
+//     searchRange(head, condition1, condition2);
+// }
 
 // void BST::searchRange(Node*& node, string& condition1, string& condition2){
 //     if (node != NULL){
