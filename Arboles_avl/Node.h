@@ -8,7 +8,7 @@ class Node{
     Node *left;
     Node *right;
     Node();
-    Node(int, Node*, Node*);
+    Node(int&, Node*, Node*);
     std::string getData();
     void setData(int);
     ~Node();

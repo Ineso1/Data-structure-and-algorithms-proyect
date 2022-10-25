@@ -1,5 +1,5 @@
-#ifndef AVLTREE
-#define AVLTREE
+#ifndef AVLTREE_H
+#define AVLTREE_H
 #include <iostream>
 #include "Node.h"
 
