@@ -1,3 +1,6 @@
+//Ines Alejandro Garcia Mosqueda A00834571
+//Jesus Fong Ruiz A01254062
+//https://github.com/Ineso1/Data-structure-and-algorithms-proyect
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -5,6 +8,7 @@
 #include <string>
 using namespace std;
 
+//Clase basica para almacenamiento de informacion de peticion
 class Node{
     public:
     string month, day, hour, ip, reason;
@@ -61,7 +65,7 @@ class Node{
     string getAccessIp(){
         return ip + " ---- " + to_string(numAccess);
     }
-    int dateIntCode(){
+    int dateIntCode(){  //Codificacion de fecha
         try
         {
             std::map<std::string, std::string> monthNum = {
@@ -92,7 +96,7 @@ class Node{
             return -1;
         }
     }
-    unsigned long long ipIntCode(){
+    unsigned long long ipIntCode(){  //Codificacion ip
         try
         {
             std::string result = "";
@@ -128,6 +132,7 @@ class Node{
     }
 };
 
+// Estructura de datos para almacenar el valor maximo en el top de la lista 
 class Heap{
     int len, maxLen;
     Node** accessList;    
@@ -213,40 +218,42 @@ void Heap::save(string fileName){
     file.close();
 }
 
+//Estructura de datos para almacenamiento de todos los datos dentro de la bitacora de peticiones
 class BST{
     Node* head;
     int orderType = 0;
     int len;
     private:
-        void insertNode(Node*&, Node*&); //Funciona
+        void insertNode(Node*&, Node*&); //Insercion de nodo dentro de la estructura
         int sortType(Node*&, Node*&); //Dependiendo el tipo de ordenamiento se requiera (1 por Ip, 2 por Fecha)
         void deleteNode(Node*&, string&, string&, string&, string&, string&);
-        void PreOrder(Node*&); //Funciona
-        void InOrder(Node*&); //Funciona
-        void saveInOrder(Node*&, ofstream&);
-        void PostOrder(Node*&); //Funciona
-        void SubstituteToMin(Node*&, Node*&);
-        void searchNode(Node*&, string&, string&);
-        void save(string);
-        void fillHeap(Node*,Heap&);
+        void PreOrder(Node*&); //Imprime en preOrden 
+        void InOrder(Node*&); //Imprime en orden
+        void saveInOrder(Node*&, ofstream&); //Guarda los datos del arbol de forma ascendente dentro un archivo
+        void PostOrder(Node*&); // Imprime en postOrder
+        void SubstituteToMin(Node*&, Node*&); // Encuentra el minimo despues de un nodo
+        void searchNode(Node*&, string&, string&); //Busqueda de un nodo en especifico
+        //void save(string); 
+        void fillHeap(Node*,Heap&);  //Con los datos del arbol llena una estructura Heap
         //void deleteTree(Node*&);
 
     public:
-        BST(){ 
+        BST(){  //Constructor default
             Node* head = NULL;
             len = 0;
          };  
         //~BST(){ deleteTree(head); };
-        void fillBST(std::string, int); 
-        void insert(string&, string&, string&, string&, string&);
-        void InOrder(){ InOrder(head); }; //Lista
-        void PreOrder(){ PreOrder(head); };
-        void PostOrder(){ PostOrder(head); };
-        void deleteNode(string&, string&, string&, string&, string&);
-        void searchRange(string&, string&);
-        int size(){ return len; };
-        void topAccess();
-        void save(){ save("sorted.txt"); };
+        void fillBST(std::string, int); //Llenado de arbol binario 
+        void insert(string&, string&, string&, string&, string&); //inserta un nodo
+        void InOrder(){ InOrder(head); }; //Imprime en orden
+        void PreOrder(){ PreOrder(head); }; //Imprime preOrder
+        void PostOrder(){ PostOrder(head); }; //Imprime posOrder
+        void deleteNode(string&, string&, string&, string&, string&); //Borra un nodo en especifico
+        void searchRange(string&, string&); //Busca por rango
+        int size(){ return len; }; //Retorna tamano de datos dentro del arbol
+        void topAccess(); //Obtiene un archivo con las Ip ordenadas de acuerdo a la cantidad de accesos denegados
+        void save(string); 
+        //void save(string fileName){ save(fileName); }; //Guarda ordenamiento de datos de acuerdo a la condicion de ordenamiento
 };
 
 int BST::sortType(Node*&node, Node*&newNode){
@@ -338,6 +345,7 @@ void BST::fillBST(std::string fileName, int condition){
     std::ifstream file;
     head = NULL;
     orderType = condition;
+    len = 0;
     file.open(fileName);
     string month, day, hour, ip, reason;
     try{
@@ -375,15 +383,35 @@ void BST::topAccess(){
     heap.save("TopAccess.txt");
 }
 
+void FiveTopAccess(){
+    ifstream file;
+    file.open("TopAccess.txt");
+    string row;
+    cout<<"Top de accesos denegados dentro del sistema:"<<endl;
+    for (int i = 0; i < 5; i++)
+    {
+        getline(file, row);
+        cout << row << endl;
+    }
+}
 
 int main(){
+    //Instancia de objeto BST
     BST listadoInformacion;
+    //Llenado de estructura BST por Fecha de intento de acceso O(nlogn)
+    listadoInformacion.fillBST("bitacora.txt", 2);
+    //Guardado de la estructura O(n)
+    listadoInformacion.save("sortedByDate.txt");
+    //Llenado de estructura BST por Ip O(nlogn)
     listadoInformacion.fillBST("bitacora.txt", 1);
-    //listadoInformacion.InOrder();
-    listadoInformacion.save();
+    //Guardado de la estructura O(n)
+    listadoInformacion.save("sortedByIp.txt");
     cout<<endl;
-    cout<< listadoInformacion.size() <<endl;
+    cout<< "Elementos evaluados: " <<listadoInformacion.size() <<endl;
     cout<<endl<<endl<<endl;
+    //LLenado de Heap O(nlogn) y vaciado para guardar TopAcces.txt (nlogn) 
     listadoInformacion.topAccess();
+    //Impresion de las 5 Ip que tuvieron mayor cantidad de intentos negados
+    FiveTopAccess();
     return 0;
 }
