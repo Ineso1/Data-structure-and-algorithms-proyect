@@ -46,7 +46,9 @@ class Node{
         this->right = right;
     }
     string getData(){       //Return de fecha en formato "mes dia hora:minuto:segundo.milisegundos ip(XXX.XXX.XXX:XXXX) razon"
-        string res = this->month + " " + this->day + " " + this->hour + " " + this->ip + " " + this->reason;
+        string ipNoPort = ip;
+        ipNoPort.erase(ipNoPort.length()-5);
+        string res = this->month + " " + this->day + " " + this->hour + " " + ipNoPort + " " + this->reason;
         return res;
     }
     void setData(string &month, string &day, string &hour, string &ip, string &reason){     //Reescritura de fecha
@@ -111,6 +113,8 @@ class Node{
                     dig++;
                 }
                 else{
+                    if (ip[i] == ':')
+                    break;
                     while (dig<3)
                     {
                         cuarteto = "0" + cuarteto;
@@ -137,18 +141,18 @@ class Heap{
     int len, maxLen;
     Node** accessList;    
     private:
-        void swap(int&, int&);
-        void bubbleDown(int&);
+        void swap(int&, int&);  //O(1)
+        void bubbleDown(int&);  //O(logn)
     public:
         Heap(int num){ 
             len = -1;
             maxLen = num;
             accessList = new Node*[num+1]; 
             };
-        void push(Node*&);
-        Node* pop();
-        void save(string);
-        void print();
+        void push(Node*&);  //O(logn)
+        Node* pop();    //O(logn)
+        void save(string);  //O(nlogn)
+        void print();   //O(n)
 };
 
 void Heap::push(Node*& node){
@@ -202,8 +206,10 @@ void Heap::swap(int& father, int& child){
 
 void Heap::print(){
     for (int i = 0; i < len; i++)
-    {
-        cout << accessList[i]->ip << " - " << accessList[i]->numAccess << endl;
+    {   
+        string ip = accessList[i]->ip;
+        ip.erase(ip.length()-5);
+        cout << ip << " - " << accessList[i]->numAccess << endl;
     }
 };
 
@@ -224,18 +230,17 @@ class BST{
     int orderType = 0;
     int len;
     private:
-        void insertNode(Node*&, Node*&); //Insercion de nodo dentro de la estructura
-        int sortType(Node*&, Node*&); //Dependiendo el tipo de ordenamiento se requiera (1 por Ip, 2 por Fecha)
-        void deleteNode(Node*&, string&, string&, string&, string&, string&);
-        void PreOrder(Node*&); //Imprime en preOrden 
-        void InOrder(Node*&); //Imprime en orden
-        void saveInOrder(Node*&, ofstream&); //Guarda los datos del arbol de forma ascendente dentro un archivo
-        void PostOrder(Node*&); // Imprime en postOrder
-        void SubstituteToMin(Node*&, Node*&); // Encuentra el minimo despues de un nodo
-        void searchNode(Node*&, string&, string&); //Busqueda de un nodo en especifico
-        //void save(string); 
-        void fillHeap(Node*,Heap&);  //Con los datos del arbol llena una estructura Heap
-        //void deleteTree(Node*&);
+        void insertNode(Node*&, Node*&); //Insercion de nodo dentro de la estructura    //O(logn)
+        int sortType(Node*&, Node*&); //Dependiendo el tipo de ordenamiento se requiera (1 por Ip, 2 por Fecha) //O(1)
+        void deleteNode(Node*&, string&, string&, string&, string&, string&);   //O(logn)
+        void PreOrder(Node*&); //Imprime en preOrden    //O(n)
+        void InOrder(Node*&); //Imprime en orden    //O(n)
+        void saveInOrder(Node*&, ofstream&); //Guarda los datos del arbol de forma ascendente dentro un archivo //O(nlogn)
+        void PostOrder(Node*&); // Imprime en postOrder //O(n)
+        void SubstituteToMin(Node*&, Node*&); // Encuentra el minimo despues de un nodo //O(logn)
+        void searchNode(Node*&, string&, string&); //Busqueda de un nodo en especifico  //O(logn)
+        void fillHeap(Node*,Heap&);  //Con los datos del arbol llena una estructura Heap    //O(nlogn)
+        //void deleteTree(Node*&);  //O(n)
 
     public:
         BST(){  //Constructor default
@@ -243,24 +248,24 @@ class BST{
             len = 0;
          };  
         //~BST(){ deleteTree(head); };
-        void fillBST(std::string, int); //Llenado de arbol binario 
-        void insert(string&, string&, string&, string&, string&); //inserta un nodo
-        void InOrder(){ InOrder(head); }; //Imprime en orden
-        void PreOrder(){ PreOrder(head); }; //Imprime preOrder
-        void PostOrder(){ PostOrder(head); }; //Imprime posOrder
-        void deleteNode(string&, string&, string&, string&, string&); //Borra un nodo en especifico
-        void searchRange(string&, string&); //Busca por rango
-        int size(){ return len; }; //Retorna tamano de datos dentro del arbol
-        void topAccess(); //Obtiene un archivo con las Ip ordenadas de acuerdo a la cantidad de accesos denegados
-        void save(string); 
+        void fillBST(std::string, int); //Llenado de arbol binario //O(nlogn)
+        void insert(string&, string&, string&, string&, string&); //inserta un nodo //O(logn)
+        void InOrder(){ InOrder(head); }; //Imprime en orden    //O(n)
+        void PreOrder(){ PreOrder(head); }; //Imprime preOrder  //O(n)
+        void PostOrder(){ PostOrder(head); }; //Imprime posOrder    //O(n)
+        void deleteNode(string&, string&, string&, string&, string&); //Borra un nodo en especifico //O(logn)
+        void searchRange(string&, string&); //Busca por rango   //O(nlogn)
+        int size(){ return len; }; //Retorna tamano de datos dentro del arbol   //O(nlogn)
+        void topAccess(); //Obtiene un archivo con las Ip ordenadas de acuerdo a la cantidad de accesos denegados   //O(nlogn)
+        void save(string); //O(n)
         //void save(string fileName){ save(fileName); }; //Guarda ordenamiento de datos de acuerdo a la condicion de ordenamiento
 };
 
 int BST::sortType(Node*&node, Node*&newNode){
     if (orderType == 1)
     {   
-        unsigned long long nodeCode = node->ipIntCode(); 
-        unsigned long long newNodeCode = newNode->ipIntCode();
+        unsigned long long nodeCode = (node->ipIntCode()); 
+        unsigned long long newNodeCode = (newNode->ipIntCode());
         if (nodeCode > newNodeCode)
             return 1;
         else if (nodeCode < newNodeCode)
@@ -399,15 +404,15 @@ int main(){
     //Instancia de objeto BST
     BST listadoInformacion;
     //Llenado de estructura BST por Fecha de intento de acceso O(nlogn)
-    listadoInformacion.fillBST("bitacora.txt", 2);
+    listadoInformacion.fillBST("bitacoraHeap.txt", 2);
     //Guardado de la estructura O(n)
     listadoInformacion.save("sortedByDate.txt");
     //Llenado de estructura BST por Ip O(nlogn)
-    listadoInformacion.fillBST("bitacora.txt", 1);
+    listadoInformacion.fillBST("bitacoraHeap.txt", 1);
     //Guardado de la estructura O(n)
     listadoInformacion.save("sortedByIp.txt");
     cout<<endl;
-    cout<< "Elementos evaluados: " <<listadoInformacion.size() <<endl;
+    cout<< "Elementos registrados: " <<listadoInformacion.size() <<endl;
     cout<<endl<<endl<<endl;
     //LLenado de Heap O(nlogn) y vaciado para guardar TopAcces.txt (nlogn) 
     listadoInformacion.topAccess();
