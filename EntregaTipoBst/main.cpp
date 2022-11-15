@@ -136,7 +136,6 @@ class Node{
     }
 };
 
-// Estructura de datos para almacenar el valor maximo en el top de la lista 
 class Heap{
     int len, maxLen;
     Node** accessList;    
@@ -404,11 +403,11 @@ int main(){
     //Instancia de objeto BST
     BST listadoInformacion;
     //Llenado de estructura BST por Fecha de intento de acceso O(nlogn)
-    listadoInformacion.fillBST("bitacoraHeap.txt", 2);
+    listadoInformacion.fillBST("bitacora (4).txt", 2);
     //Guardado de la estructura O(n)
     listadoInformacion.save("sortedByDate.txt");
     //Llenado de estructura BST por Ip O(nlogn)
-    listadoInformacion.fillBST("bitacoraHeap.txt", 1);
+    listadoInformacion.fillBST("bitacora (4).txt", 1);
     //Guardado de la estructura O(n)
     listadoInformacion.save("sortedByIp.txt");
     cout<<endl;
