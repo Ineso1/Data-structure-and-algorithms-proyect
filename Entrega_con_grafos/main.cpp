@@ -1,3 +1,9 @@
+/*
+Inés Alejandro Garcia Mosqueda A00834571
+Jesus Fong Ruiz A01254062
+https://github.com/Ineso1/Data-structure-and-algorithms-proyect/tree/main/Entrega_con_grafos
+*/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,7 +16,7 @@
 
 using namespace std;
 
-class Node{     //Calse para facilitar la insercion de subip dentro del grafo
+class Node{     //Clase para facilitar la insercion de subip dentro del grafo
     public:
     int n, s;
     Node(int n, int s){
@@ -518,7 +524,7 @@ void readInOutDegreeResults(){
 
 /*
 Lectura de archivo bitacora (4).txt
-Alamacenamiento de matriz de adjacencia obtenida en AdjMatrix.csv para analisis de desarrollo
+Alamacenamiento de matriz de adyacencia obtenida en AdjMatrix.csv para analisis de desarrollo
 Almacenamiento de las subIps en InOutDegree.txt (Contiene el InDegree y OutDegree ordenado por valor de subIp)
 Almacenamiento de las subIps en InDegree.txt (Contiene el InDegree y OutDegree ordenado por InDegree)
 Almacenamiento de las subIps en OutDegree.txt (Contiene el InDegree y OutDegree ordenado por OutDegree)
