@@ -1,3 +1,11 @@
+/*
+Repo en Github
+https://github.com/Ineso1/Data-structure-and-algorithms-proyect
+
+Inés Alejandro Garcia Mosqueda A00834571
+Jesus Fong Ruiz A01254062
+*/
+
 #include <iostream>
 #include <string>
 #include <list>
