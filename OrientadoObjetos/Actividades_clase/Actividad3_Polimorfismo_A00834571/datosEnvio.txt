@@ -1,0 +1,4 @@
+p Elsa_Torres Monterrey 64840 Salvador_Leal Guadalajara 44190 30 25 20 10
+s Javier_Garza Saltillo 25015 Karla_Rosas Monterrey 64890 10 35
+p Jorge_Torres Saltillo 25015 Marco_Casas Guadalajara 44240 40 55 30 25
+s Salvador_Leal Guadalajara 44190 Erika_Ruiz San_Pedro 66278 10 28
