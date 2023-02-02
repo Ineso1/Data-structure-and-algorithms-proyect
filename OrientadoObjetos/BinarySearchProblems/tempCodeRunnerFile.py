@@ -1,2 +1,1 @@
-elif j[1] != 0:
-            #     j[1] += 1
+print(lex)
